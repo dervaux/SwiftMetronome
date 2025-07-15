@@ -30,6 +30,9 @@ let package = Package(
             dependencies: [
                 .product(name: "AudioKit", package: "AudioKit"),
                 .product(name: "AudioKitEX", package: "AudioKitEX")
+            ],
+            resources: [
+                .process("Resources")
             ]),
         .testTarget(
             name: "SwiftMetronomeTests",
