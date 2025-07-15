@@ -13,7 +13,6 @@ import SwiftMetronome
 
 struct MetronomeView: View {
     @StateObject private var metronome = Metronome()
-    @State private var isPlaying = false
 
     var body: some View {
         VStack {
@@ -43,18 +42,12 @@ struct MetronomeView: View {
 
             // Play/Stop Button
             Button(action: {
-                if isPlaying {
-                    metronome.stop()
-                    isPlaying = false
-                } else {
-                    metronome.start()
-                    isPlaying = true
-                }
+                metronome.toggle()
             }) {
-                Text(isPlaying ? "Stop" : "Start")
+                Text(metronome.isPlaying ? "Stop" : "Start")
                     .font(.title)
                     .frame(width: 150, height: 150)
-                    .background(isPlaying ? Color.red : Color.green)
+                    .background(metronome.isPlaying ? Color.red : Color.green)
                     .foregroundColor(.white)
                     .clipShape(Circle())
             }

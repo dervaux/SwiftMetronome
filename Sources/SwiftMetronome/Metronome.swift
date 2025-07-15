@@ -33,7 +33,7 @@ public class Metronome: ObservableObject {
     }
 
     /// Whether the metronome is currently playing
-    public private(set) var isPlaying: Bool = false
+    @Published public private(set) var isPlaying: Bool = false
 
     /// Volume level (0.0 to 1.0)
     public var volume: Float = 1.0 {
