@@ -8,7 +8,7 @@ A Swift package for creating metronomes with AudioKit integration.
 import SwiftMetronome
 
 let metronome = Metronome()
-metronome.tempo = 120        // BPM (40-240)
+metronome.tempo = 120        // BPM (supports wide range, e.g., 1-400+)
 metronome.subdivision = 4    // Subdivisions per beat (1-6+)
 metronome.start()
 metronome.stop()
@@ -16,7 +16,7 @@ metronome.stop()
 
 ## Published Properties
 
-- `@Published var tempo: Double` - Beats per minute (40-240)
+- `@Published var tempo: Double` - Beats per minute (supports wide range)
 - `@Published var subdivision: Int` - Number of subdivisions per beat
 - `@Published var isPlaying: Bool` - Current playback state
 
