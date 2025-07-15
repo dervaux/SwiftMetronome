@@ -4,7 +4,7 @@ import AVFoundation
 import Combine
 
 /// A metronome implementation using AudioKit with support for programmable subdivisions
-public class SwiftMetronome: ObservableObject {
+public class Metronome: ObservableObject {
 
     // MARK: - Properties
 
@@ -94,10 +94,10 @@ public class SwiftMetronome: ObservableObject {
             sequencer.playFromStart()
 
             isPlaying = true
-            print("SwiftMetronome: Started with tempo \(tempo) BPM, subdivision \(subdivision)")
+            print("Metronome: Started with tempo \(tempo) BPM, subdivision \(subdivision)")
 
         } catch {
-            print("SwiftMetronome: Error starting - \(error)")
+            print("Metronome: Error starting - \(error)")
         }
     }
 
@@ -107,7 +107,7 @@ public class SwiftMetronome: ObservableObject {
 
         sequencer.stop()
         isPlaying = false
-        print("SwiftMetronome: Stopped")
+        print("Metronome: Stopped")
     }
 
     /// Toggle play/stop state
@@ -139,26 +139,21 @@ public class SwiftMetronome: ObservableObject {
             let subdivisionDuration = 1.0 / Double(subdivision)
             for i in 1..<subdivision {
                 let position = Double(i) * subdivisionDuration
-                track.add(noteNumber: 24, velocity: 100, position: position, duration: 0.5)
+                track.add(noteNumber: 24, velocity: 127, position: position, duration: 0.7)
             }
         }
-
-        // Subdivision example
-        //                track.add(noteNumber: 24, velocity: 100, position: 1.0, duration: 0.5)
-        //                track.add(noteNumber: 24, velocity: 100, position: 2.0, duration: 0.5)
-        //                track.add(noteNumber: 24, velocity: 100, position: 3.0, duration: 0.5)
 
         // Set track properties
         track.length = 1.0
         track.loopEnabled = true
 
-        print("SwiftMetronome: Updated sequence - \(subdivision) subdivisions per beat")
+        print("Metronome: Updated sequence - \(subdivision) subdivisions per beat")
     }
 }
 
 // MARK: - Convenience Extensions
 
-extension SwiftMetronome {
+extension Metronome {
 
     /// Set tempo and subdivision in one call
     public func configure(tempo: Double, subdivision: Int) {
@@ -166,31 +161,7 @@ extension SwiftMetronome {
         self.subdivision = subdivision
     }
 
-    /// Common subdivision presets
-    public enum SubdivisionPreset: Int, CaseIterable {
-        case quarter = 1        // Quarter notes
-        case eighth = 2         // Eighth notes
-        case triplet = 3        // Eighth note triplets
-        case sixteenth = 4      // Sixteenth notes
-        case quintuplet = 5     // Quintuplets
-        case sextuplet = 6      // Sextuplets
 
-        public var description: String {
-            switch self {
-            case .quarter: return "Quarter Notes"
-            case .eighth: return "Eighth Notes"
-            case .triplet: return "Triplets"
-            case .sixteenth: return "Sixteenth Notes"
-            case .quintuplet: return "Quintuplets"
-            case .sextuplet: return "Sextuplets"
-            }
-        }
-    }
-
-    /// Apply a subdivision preset
-    public func setSubdivision(_ preset: SubdivisionPreset) {
-        subdivision = preset.rawValue
-    }
 }
 
 // MARK: - MIDISampler Extension
@@ -208,7 +179,7 @@ extension MIDISampler {
                     let audioFile = try AVAudioFile(forReading: soundURL)
                     audioFiles.append(audioFile)
                 } else {
-                    print("SwiftMetronome: Warning - Could not find \(fileName).wav in package resources")
+                    print("Metronome: Warning - Could not find \(fileName).wav in package resources")
                 }
             }
 
@@ -218,7 +189,7 @@ extension MIDISampler {
             }
 
         } catch {
-            print("SwiftMetronome: Error loading sounds - \(error)")
+            print("Metronome: Error loading sounds - \(error)")
         }
     }
 }

@@ -12,7 +12,8 @@ import AVFoundation
 import SwiftMetronome
 
 struct MetronomeView: View {
-    @StateObject private var metronome = SwiftMetronome()
+    @StateObject private var metronome = Metronome()
+    @State private var isPlaying = false
 
     var body: some View {
         VStack {
@@ -29,9 +30,11 @@ struct MetronomeView: View {
             }
 
             // Subdivision Picker
+            Text("Subdivisions")
+                .font(.headline)
             Picker("Subdivision", selection: $metronome.subdivision) {
-                ForEach(SwiftMetronome.SubdivisionPreset.allCases, id: \.self) { preset in
-                    Text(preset.description).tag(preset.rawValue)
+                ForEach(1...5, id: \.self) { subdivision in
+                    Text("\(subdivision)").tag(subdivision)
                 }
             }
             .pickerStyle(SegmentedPickerStyle())
@@ -40,12 +43,18 @@ struct MetronomeView: View {
 
             // Play/Stop Button
             Button(action: {
-                metronome.toggle()
+                if isPlaying {
+                    metronome.stop()
+                    isPlaying = false
+                } else {
+                    metronome.start()
+                    isPlaying = true
+                }
             }) {
-                Text(metronome.isPlaying ? "Stop" : "Start")
+                Text(isPlaying ? "Stop" : "Start")
                     .font(.title)
                     .frame(width: 150, height: 150)
-                    .background(metronome.isPlaying ? Color.red : Color.green)
+                    .background(isPlaying ? Color.red : Color.green)
                     .foregroundColor(.white)
                     .clipShape(Circle())
             }
